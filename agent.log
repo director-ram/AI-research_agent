@@ -1,0 +1,28 @@
+2025-09-18 23:34:25,625 - ai_research_agent - INFO - [logger.py:50] - [8238c69c-73bc-469b-856e-ffc39ca021c9] Starting 5-step research workflow for topic: test
+2025-09-18 23:34:25,639 - ai_research_agent - INFO - [logger.py:50] - [8238c69c-73bc-469b-856e-ffc39ca021c9] Step 1: Input Parsing for topic: test
+2025-09-18 23:34:25,662 - ai_research_agent - INFO - [logger.py:50] - [8238c69c-73bc-469b-856e-ffc39ca021c9] Step 2: Data Gathering for topic: test
+2025-09-18 23:34:27,554 - ai_research_agent - INFO - [logger.py:50] - [8238c69c-73bc-469b-856e-ffc39ca021c9] Step 3: Processing articles for topic: test
+2025-09-18 23:34:29,152 - ai_research_agent - INFO - [logger.py:50] - [8238c69c-73bc-469b-856e-ffc39ca021c9] Step 4: Result Persistence for topic: test
+2025-09-18 23:34:29,176 - ai_research_agent - INFO - [logger.py:50] - [8238c69c-73bc-469b-856e-ffc39ca021c9] Step 5: Return to Frontend for topic: test
+2025-09-18 23:34:29,183 - ai_research_agent - INFO - [logger.py:50] - [8238c69c-73bc-469b-856e-ffc39ca021c9] 5-step research workflow completed successfully for topic: test
+2025-09-18 23:49:35,778 - ai_research_agent - INFO - [logger.py:50] - [e6d7e914-b0ac-4719-b382-568cc4b141bc] Starting 5-step research workflow for topic: test research
+2025-09-18 23:49:35,879 - ai_research_agent - INFO - [logger.py:50] - [e6d7e914-b0ac-4719-b382-568cc4b141bc] Step 1: Input Parsing for topic: test research
+2025-09-18 23:49:36,036 - ai_research_agent - INFO - [logger.py:50] - [e6d7e914-b0ac-4719-b382-568cc4b141bc] Step 2: Data Gathering for topic: test research
+2025-09-18 23:49:40,446 - ai_research_agent - INFO - [logger.py:50] - [e6d7e914-b0ac-4719-b382-568cc4b141bc] Step 3: Processing articles for topic: test research
+2025-09-18 23:49:54,738 - ai_research_agent - INFO - [logger.py:50] - [e6d7e914-b0ac-4719-b382-568cc4b141bc] Step 4: Result Persistence for topic: test research
+2025-09-18 23:49:54,754 - ai_research_agent - INFO - [logger.py:50] - [e6d7e914-b0ac-4719-b382-568cc4b141bc] Step 5: Return to Frontend for topic: test research
+2025-09-18 23:49:54,758 - ai_research_agent - INFO - [logger.py:50] - [e6d7e914-b0ac-4719-b382-568cc4b141bc] 5-step research workflow completed successfully for topic: test research
+2025-09-18 23:50:42,439 - ai_research_agent - INFO - [logger.py:50] - [fff9e19c-efa9-4538-8a07-3c85cd82ca02] Starting 5-step research workflow for topic: AI in gaming industry
+2025-09-18 23:51:18,705 - ai_research_agent - INFO - [logger.py:50] - [fff9e19c-efa9-4538-8a07-3c85cd82ca02] Step 1: Input Parsing for topic: AI in gaming industry
+2025-09-18 23:51:18,730 - ai_research_agent - INFO - [logger.py:50] - [fff9e19c-efa9-4538-8a07-3c85cd82ca02] Step 2: Data Gathering for topic: AI in gaming industry
+2025-09-18 23:51:21,017 - ai_research_agent - INFO - [logger.py:50] - [fff9e19c-efa9-4538-8a07-3c85cd82ca02] Step 3: Processing articles for topic: AI in gaming industry
+2025-09-18 23:51:22,605 - ai_research_agent - INFO - [logger.py:50] - [fff9e19c-efa9-4538-8a07-3c85cd82ca02] Step 4: Result Persistence for topic: AI in gaming industry
+2025-09-18 23:51:22,627 - ai_research_agent - INFO - [logger.py:50] - [fff9e19c-efa9-4538-8a07-3c85cd82ca02] Step 5: Return to Frontend for topic: AI in gaming industry
+2025-09-18 23:51:22,632 - ai_research_agent - INFO - [logger.py:50] - [fff9e19c-efa9-4538-8a07-3c85cd82ca02] 5-step research workflow completed successfully for topic: AI in gaming industry
+2025-09-18 23:57:05,643 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Starting 5-step research workflow for topic: Healthcare centers facilities
+2025-09-18 23:57:05,649 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Step 1: Input Parsing for topic: Healthcare centers facilities
+2025-09-18 23:57:05,662 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Step 2: Data Gathering for topic: Healthcare centers facilities
+2025-09-18 23:57:09,116 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Step 3: Processing articles for topic: Healthcare centers facilities
+2025-09-18 23:57:10,700 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Step 4: Result Persistence for topic: Healthcare centers facilities
+2025-09-18 23:57:10,713 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Step 5: Return to Frontend for topic: Healthcare centers facilities
+2025-09-18 23:57:10,717 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] 5-step research workflow completed successfully for topic: Healthcare centers facilities

@@ -1,0 +1,19 @@
+# AI Research Agent Configuration
+
+# OpenAI API Key (for real AI analysis)
+OPENAI_API_KEY=your_openai_api_key_here
+
+# SerpAPI Key (for real web search)
+SERPAPI_KEY=your_serpapi_key_here
+
+# Database URL
+DATABASE_URL=sqlite:///./research_agent.db
+
+# Agent Settings
+MAX_RESEARCH_STEPS=5
+MAX_WEB_SEARCHES=3
+RESEARCH_TIMEOUT=300
+
+# Logging
+LOG_LEVEL=INFO
+LOG_FILE=agent.log
