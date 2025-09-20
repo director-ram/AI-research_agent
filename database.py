@@ -4,11 +4,14 @@ Database setup and operations for the AI Research Agent
 from sqlalchemy import create_engine, Column, String, DateTime, Text, Float, Integer, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, List
+import logging
 from models import ResearchRequest, ResearchStep, ResearchStatus
 from config import settings
 import os
+
+logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
@@ -18,7 +21,7 @@ class ResearchRequestDB(Base):
     research_id = Column(String, primary_key=True)
     topic = Column(String, nullable=False)
     status = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     completed_at = Column(DateTime, nullable=True)
     final_result = Column(JSON, nullable=True)
     trace_log = Column(Text, nullable=True)
@@ -35,7 +38,7 @@ class ResearchStepDB(Base):
     input_data = Column(JSON, nullable=True)
     output_data = Column(JSON, nullable=True)
     error_message = Column(Text, nullable=True)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     duration_seconds = Column(Float, nullable=True)
 
 class DatabaseManager:
@@ -46,7 +49,13 @@ class DatabaseManager:
         else:
             database_url = settings.database_url
         
-        self.engine = create_engine(database_url)
+        self.engine = create_engine(
+            database_url,
+            pool_size=10,
+            max_overflow=20,
+            pool_pre_ping=True,
+            pool_recycle=3600
+        )
         Base.metadata.create_all(bind=self.engine)
         SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
         self.SessionLocal = SessionLocal
@@ -55,47 +64,55 @@ class DatabaseManager:
         return self.SessionLocal()
     
     def save_research_request(self, request: ResearchRequest) -> None:
-        with self.get_session() as session:
-            # Save or update research request
-            db_request = session.query(ResearchRequestDB).filter(
-                ResearchRequestDB.research_id == request.research_id
-            ).first()
-            
-            if db_request:
-                db_request.status = request.status
-                db_request.completed_at = request.completed_at
-                db_request.final_result = request.final_result
-                db_request.trace_log = "\n".join(request.trace_log)
-            else:
-                db_request = ResearchRequestDB(
-                    research_id=request.research_id,
-                    topic=request.topic,
-                    status=request.status,
-                    created_at=request.created_at,
-                    completed_at=request.completed_at,
-                    final_result=request.final_result,
-                    trace_log="\n".join(request.trace_log)
-                )
-                session.add(db_request)
-            
-            session.commit()
+        try:
+            with self.get_session() as session:
+                # Save or update research request
+                db_request = session.query(ResearchRequestDB).filter(
+                    ResearchRequestDB.research_id == request.research_id
+                ).first()
+                
+                if db_request:
+                    db_request.status = request.status
+                    db_request.completed_at = request.completed_at
+                    db_request.final_result = request.final_result
+                    db_request.trace_log = "\n".join(request.trace_log)
+                else:
+                    db_request = ResearchRequestDB(
+                        research_id=request.research_id,
+                        topic=request.topic,
+                        status=request.status,
+                        created_at=request.created_at,
+                        completed_at=request.completed_at,
+                        final_result=request.final_result,
+                        trace_log="\n".join(request.trace_log)
+                    )
+                    session.add(db_request)
+                
+                session.commit()
+        except Exception as e:
+            logger.error(f"Failed to save research request {request.research_id}: {str(e)}")
+            raise
     
     def save_research_step(self, step: ResearchStep, research_id: str) -> None:
-        with self.get_session() as session:
-            db_step = ResearchStepDB(
-                research_id=research_id,
-                step_id=step.step_id,
-                step_type=step.step_type,
-                description=step.description,
-                status=step.status,
-                input_data=step.input_data,
-                output_data=step.output_data,
-                error_message=step.error_message,
-                timestamp=step.timestamp,
-                duration_seconds=step.duration_seconds
-            )
-            session.add(db_step)
-            session.commit()
+        try:
+            with self.get_session() as session:
+                db_step = ResearchStepDB(
+                    research_id=research_id,
+                    step_id=step.step_id,
+                    step_type=step.step_type,
+                    description=step.description,
+                    status=step.status,
+                    input_data=step.input_data,
+                    output_data=step.output_data,
+                    error_message=step.error_message,
+                    timestamp=step.timestamp,
+                    duration_seconds=step.duration_seconds
+                )
+                session.add(db_step)
+                session.commit()
+        except Exception as e:
+            logger.error(f"Failed to save research step {step.step_id}: {str(e)}")
+            raise
     
     def get_research_request(self, research_id: str) -> Optional[ResearchRequest]:
         with self.get_session() as session:

@@ -4,7 +4,7 @@ Core AI Research Agent with planning, execution, and decision-making capabilitie
 import asyncio
 import uuid
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 from models import ResearchRequest, ResearchStep, ResearchStatus, StepType, ResearchResult, WebSearchResult
 from database import db_manager
@@ -22,12 +22,13 @@ class AIResearchAgent:
         self.analysis_service = AnalysisService()
         self.logger = AgentLogger()
         
-    async def research_topic(self, topic: str) -> ResearchRequest:
+    async def research_topic(self, topic: str, research_id: Optional[str] = None) -> ResearchRequest:
         """
-        Main entry point for research following the 5-step workflow.
+        Main entry point for research. Takes a topic and returns structured research results.
+        Allows an optional research_id for external job tracking.
         """
-        research_id = str(uuid.uuid4())
-        start_time = datetime.utcnow()
+        research_id = research_id or str(uuid.uuid4())
+        start_time = datetime.now(timezone.utc)
         
         # Create initial research request
         request = ResearchRequest(
@@ -39,33 +40,33 @@ class AIResearchAgent:
             trace_log=[]
         )
         
-        self.logger.log(f"Starting 5-step research workflow for topic: {topic}", research_id)
+        self.logger.log(f"Starting research for topic: {topic}", research_id)
         
         try:
-            # Step 1: Input Parsing - Validate input and store request in DB
+            # Step 1: Planning (now Step 1 input parsing in refactor remains compatible)
             request = await self._step1_input_parsing(request)
             
-            # Step 2: Data Gathering - Fetch relevant articles from external APIs
+            # Step 2: Execute research steps
             request = await self._step2_data_gathering(request)
             
-            # Step 3: Processing - Extract top 5 articles, summarize each, extract keywords
+            # Step 3: Synthesize results
             request = await self._step3_processing(request)
             
-            # Step 4: Result Persistence - Save processed results and logs in DB
+            # Step 4: Validate and finalize (persistence handled inside as well)
             request = await self._step4_result_persistence(request)
             
-            # Step 5: Return to Frontend - Prepare structured results
+            # Step 5: Return to frontend preparation
             request = await self._step5_return_to_frontend(request)
             
             request.status = ResearchStatus.COMPLETED
-            request.completed_at = datetime.utcnow()
+            request.completed_at = datetime.now(timezone.utc)
             
-            self.logger.log(f"5-step research workflow completed successfully for topic: {topic}", research_id)
+            self.logger.log(f"Research completed successfully for topic: {topic}", research_id)
             
         except Exception as e:
             request.status = ResearchStatus.FAILED
-            request.completed_at = datetime.utcnow()
-            self.logger.log(f"Research workflow failed for topic: {topic}. Error: {str(e)}", research_id)
+            request.completed_at = datetime.now(timezone.utc)
+            self.logger.log(f"Research failed for topic: {topic}. Error: {str(e)}", research_id)
             request.trace_log.append(f"ERROR: {str(e)}")
         
         # Save to database
@@ -85,7 +86,7 @@ class AIResearchAgent:
             step_type=StepType.PLANNING,
             description=f"Step 1: Input Parsing - Validating topic: {request.topic}",
             status=ResearchStatus.IN_PROGRESS,
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
         
         request.steps.append(step)
@@ -136,7 +137,7 @@ class AIResearchAgent:
             step_type=StepType.WEB_SEARCH,
             description=f"Step 2: Data Gathering - Fetching articles for: {request.topic}",
             status=ResearchStatus.IN_PROGRESS,
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
         
         request.steps.append(step)
@@ -204,7 +205,7 @@ class AIResearchAgent:
             step_type=StepType.ANALYSIS,
             description=f"Step 3: Processing - Analyzing articles for: {request.topic}",
             status=ResearchStatus.IN_PROGRESS,
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
         
         request.steps.append(step)
@@ -264,6 +265,11 @@ class AIResearchAgent:
             
             request.trace_log.append(f"STEP 3: Processed {len(processed_articles)} articles and extracted {len(top_keywords)} top keywords")
             
+            # Generate AI-powered research summary
+            research_summary = await self.analysis_service.generate_research_summary(
+                request.topic, processed_articles, top_keywords
+            )
+            
             # Update final result with processed data
             if not request.final_result:
                 request.final_result = {}
@@ -271,8 +277,12 @@ class AIResearchAgent:
             request.final_result.update({
                 "processed_articles": processed_articles,
                 "top_keywords": top_keywords,
+                "research_summary": research_summary,
                 "processing_completed": True
             })
+            
+            # Save intermediate results to database
+            db_manager.save_research_request(request)
             
         except Exception as e:
             step.status = ResearchStatus.FAILED
@@ -295,7 +305,7 @@ class AIResearchAgent:
             step_type=StepType.VALIDATION,
             description=f"Step 4: Result Persistence - Saving results for: {request.topic}",
             status=ResearchStatus.IN_PROGRESS,
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
         
         request.steps.append(step)
@@ -315,9 +325,39 @@ class AIResearchAgent:
                 "trace_log": request.trace_log,
                 "processed_articles": request.final_result.get("processed_articles", []),
                 "top_keywords": request.final_result.get("top_keywords", []),
+                "research_summary": request.final_result.get("research_summary", ""),
                 "total_articles_processed": len(request.final_result.get("processed_articles", [])),
                 "workflow_version": "5-step-v1.0"
             }
+
+            # Derive and persist preview + report URLs
+            titles = []
+            for a in request.final_result.get("processed_articles", [])[:3]:
+                if isinstance(a, dict) and a.get("title"):
+                    titles.append(a["title"])
+            kw_list = request.final_result.get("top_keywords", [])
+            if isinstance(kw_list, list):
+                kw = ", ".join([k.get('keyword', k) if isinstance(k, dict) else str(k) for k in kw_list[:5]])
+            else:
+                kw = None
+            preview_parts = []
+            if titles:
+                preview_parts.append("; ".join(titles))
+            if kw:
+                preview_parts.append(f"Keywords: {kw}")
+            preview = " | ".join(preview_parts) if preview_parts else None
+
+            report_urls = {
+                "pdf": f"/research/{request.research_id}/export.pdf",
+                "docx": f"/research/{request.research_id}/export.docx",
+            }
+
+            if not request.final_result:
+                request.final_result = {}
+            request.final_result.update({
+                "preview": preview,
+                "report_urls": report_urls,
+            })
             
             # Save to database
             db_manager.save_research_request(request)
@@ -353,7 +393,7 @@ class AIResearchAgent:
             step_type=StepType.SYNTHESIS,
             description=f"Step 5: Return to Frontend - Preparing results for: {request.topic}",
             status=ResearchStatus.IN_PROGRESS,
-            timestamp=datetime.utcnow()
+            timestamp=datetime.now(timezone.utc)
         )
         
         request.steps.append(step)
@@ -388,7 +428,8 @@ class AIResearchAgent:
                     "processed_articles": request.final_result.get("processed_articles", []),
                     "top_keywords": request.final_result.get("top_keywords", []),
                     "total_articles_processed": len(request.final_result.get("processed_articles", [])),
-                    "workflow_completed": True
+                    "workflow_completed": True,
+                    "research_summary": request.final_result.get("research_summary", "")
                 }
             }
             
@@ -409,6 +450,9 @@ class AIResearchAgent:
                 "frontend_results": frontend_results,
                 "frontend_ready": True
             })
+            
+            # Save the complete final result to database
+            db_manager.save_research_request(request)
             
         except Exception as e:
             step.status = ResearchStatus.FAILED

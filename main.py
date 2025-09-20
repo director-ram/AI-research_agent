@@ -3,18 +3,24 @@ FastAPI application for the AI Research Agent
 """
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import asyncio
-from datetime import datetime
+import logging
+from datetime import datetime, timezone
 from starlette.requests import Request
+from io import BytesIO
 
 from agent import AIResearchAgent
 from models import ResearchRequest, ResearchStatus
 from database import db_manager
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 # Celery imports removed - using synchronous processing for now
 
 app = FastAPI(
@@ -24,14 +30,12 @@ app = FastAPI(
 )
 
 # Add CORS middleware
+import os
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000", 
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3001"
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
@@ -41,8 +45,30 @@ app.add_middleware(
 # Initialize the agent
 research_agent = AIResearchAgent()
 
-# Job status tracking
+# Job status tracking and task handles
 job_status = {}
+_tasks: dict[str, asyncio.Task] = {}
+
+async def _run_research_async(research_id: str, topic: str):
+    try:
+        if research_id in job_status:
+            job_status[research_id]["status"] = "IN_PROGRESS"
+        # run workflow with fixed id so DB record matches polled id
+        await research_agent.research_topic(topic, research_id=research_id)
+        # give DB a brief moment to flush visibility
+        await asyncio.sleep(0.1)
+        if research_id in job_status and job_status[research_id].get("status") != "CANCELLED":
+            job_status[research_id]["status"] = "COMPLETED"
+            job_status[research_id]["completed_at"] = datetime.now(timezone.utc).isoformat()
+    except asyncio.CancelledError:
+        if research_id in job_status:
+            job_status[research_id]["status"] = "CANCELLED"
+            job_status[research_id]["completed_at"] = datetime.now(timezone.utc).isoformat()
+        raise
+    except Exception as e:
+        if research_id in job_status:
+            job_status[research_id]["status"] = "FAILED"
+            job_status[research_id]["error"] = str(e)
 
 # Exception handlers for clearer 4xx responses
 @app.exception_handler(RequestValidationError)
@@ -88,6 +114,7 @@ class ResearchResultResponse(BaseModel):
     confidence_score: Optional[float] = None
     trace_log: List[str] = []
     steps: List[dict] = []
+    results: Optional[Dict[str, Any]] = None  # Add results field
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
@@ -444,68 +471,176 @@ async def root():
     </html>
     """
 
-@app.post("/research", response_model=ResearchResponse)
+@app.post("/research", response_model=ResearchResponse, status_code=202)
 async def start_research(request: ResearchTopicRequest):
     """
-    Start a new research session for the given topic
+    Start a new research session for the given topic using FastAPI async task
     """
     try:
         import uuid
         research_id = str(uuid.uuid4())
-        
-        # Store job status
+
+        # initialize job record
         job_status[research_id] = {
             "task_id": research_id,
-            "status": "IN_PROGRESS",
-            "created_at": datetime.utcnow().isoformat(),
+            "status": "PENDING",
+            "created_at": datetime.now(timezone.utc).isoformat(),
             "topic": request.topic
         }
-        
-        # Run research synchronously for now (without Celery)
-        try:
-            result = await research_agent.research_topic(request.topic)
-            
-            # Update job status
-            job_status[research_id]["status"] = "COMPLETED"
-            job_status[research_id]["completed_at"] = datetime.utcnow().isoformat()
-            
-            return ResearchResponse(
-                research_id=research_id,
-                status="COMPLETED",
-                message="Research completed successfully",
-                estimated_completion_time="0 minutes"
-            )
-        except Exception as e:
-            # Update job status
-            job_status[research_id]["status"] = "FAILED"
-            job_status[research_id]["error"] = str(e)
-            
-            return ResearchResponse(
-                research_id=research_id,
-                status="FAILED",
-                message=f"Research failed: {str(e)}",
-                estimated_completion_time="0 minutes"
-            )
-        
+
+        # schedule background task on event loop
+        task = asyncio.create_task(_run_research_async(research_id, request.topic))
+        _tasks[research_id] = task
+
+        return ResearchResponse(
+            research_id=research_id,
+            status="PENDING",
+            message="Research scheduled",
+            estimated_completion_time="~2-3 minutes"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to start research: {str(e)}")
 
+@app.post("/research/{research_id}/cancel")
+async def cancel_research(research_id: str):
+    task = _tasks.get(research_id)
+    if not task:
+        # If already finished or unknown
+        if research_id in job_status:
+            return {"cancelled": False, "status": job_status[research_id].get("status", "UNKNOWN")}
+        raise HTTPException(status_code=404, detail="Research not found")
+    if task.done() or task.cancelled():
+        return {"cancelled": False, "status": job_status.get(research_id, {}).get("status", "COMPLETED")}
+    task.cancel()
+    job_status[research_id] = {**job_status.get(research_id, {}), "status": "CANCELLED"}
+    return {"cancelled": True, "research_id": research_id}
+
 @app.get("/research/{research_id}/status")
 async def get_research_status(research_id: str):
-    """
-    Get the status of a research job
-    """
     if research_id not in job_status:
         raise HTTPException(status_code=404, detail="Research job not found")
+
+    # Compute progress from DB (steps out of 5) and provide snapshot when ready
+    req = db_manager.get_research_request(research_id)
+    current = len(req.steps) if req else 0
+    total = 5
+
+    info = job_status[research_id]
     
-    job_info = job_status[research_id]
+    # Enhanced progress tracking with step details
+    progress_details = []
+    if req and req.steps:
+        for i, step in enumerate(req.steps):
+            progress_details.append({
+                "step_number": i + 1,
+                "step_type": step.step_type,
+                "status": step.status,
+                "description": step.description,
+                "completed": step.status == "completed"
+            })
     
-    # Return the stored status (no Celery needed)
+    # Calculate percentage with more granular tracking
+    if current == 0:
+        percent = 0
+    elif current < total:
+        percent = round((current / total) * 100, 1)
+    else:
+        percent = 100
+
+    snapshot = None
+    if req:
+        # Helper: build preview and report urls
+        def _build_preview_and_reports(r):
+            preview = None
+            # Prefer existing summary if present
+            if getattr(r, 'summary', None):
+                preview = str(getattr(r, 'summary'))
+            # Otherwise derive from final_result
+            if not preview and r.final_result:
+                fr = r.final_result
+                titles = []
+                for a in fr.get('processed_articles', [])[:3]:
+                    title = a.get('title') if isinstance(a, dict) else None
+                    if title:
+                        titles.append(title)
+                keywords = fr.get('top_keywords', [])
+                if isinstance(keywords, list):
+                    kw = ", ".join([k.get('keyword', k) if isinstance(k, dict) else str(k) for k in keywords[:5]])
+                else:
+                    kw = None
+                parts = []
+                if titles:
+                    parts.append("; ".join(titles))
+                if kw:
+                    parts.append(f"Keywords: {kw}")
+                if parts:
+                    preview = " | ".join(parts)
+            report_urls = {
+                "pdf": f"/research/{r.research_id}/export.pdf",
+                "docx": f"/research/{r.research_id}/export.docx",
+            }
+            return preview, report_urls
+
+        preview, report_urls = _build_preview_and_reports(req)
+        # Build workflow_steps
+        workflow_steps = []
+        for i, step in enumerate(req.steps):
+            workflow_steps.append({
+                "step_number": i + 1,
+                "step_id": step.step_id,
+                "step_type": str(step.step_type),
+                "description": step.description,
+                "status": str(step.status),
+                "duration_seconds": step.duration_seconds,
+                "timestamp": step.timestamp.isoformat() if step.timestamp else None,
+                "output_data": step.output_data,
+                "error_message": step.error_message
+            })
+        # Results
+        results = {}
+        if req.final_result:
+            processed = req.final_result.get("processed_articles", [])
+            top_keywords = req.final_result.get("top_keywords", [])
+            research_summary = req.final_result.get("research_summary", "")
+            results = {
+                "processed_articles": processed,
+                "top_keywords": top_keywords,
+                "research_summary": research_summary,
+                "total_articles_processed": len(processed)
+            }
+            if not results.get("processed_articles") and "analysis" in req.final_result:
+                analysis = req.final_result["analysis"]
+                results = {
+                    "processed_articles": analysis.get("sources", []),
+                    "top_keywords": analysis.get("key_findings", []),
+                    "total_articles_processed": len(analysis.get("sources", []))
+                }
+        snapshot = {
+            "research_id": req.research_id,
+            "topic": req.topic,
+            "status": req.status,
+            "created_at": req.created_at,
+            "completed_at": req.completed_at,
+            "trace_log": req.trace_log,
+            "workflow_steps": workflow_steps,
+            "results": results,
+            "steps": [s.model_dump() for s in req.steps],
+            "preview": preview,
+            "report_urls": report_urls,
+        }
+
     return {
         "research_id": research_id,
-        "status": job_info["status"],
-        "message": job_info.get("message", "Processing..."),
-        "progress": job_info.get("progress", {"current": 0, "total": 5})
+        "status": info.get("status", "UNKNOWN"),
+        "message": info.get("message", "Processing..."),
+        "progress": {
+            "current": current, 
+            "total": total, 
+            "percent": percent,
+            "details": progress_details
+        },
+        "ready": bool(req),
+        "snapshot": snapshot,
     }
 
 @app.get("/research/{research_id}", response_model=ResearchResultResponse)
@@ -518,6 +653,9 @@ async def get_research_result(research_id: str):
     if not research_request:
         raise HTTPException(status_code=404, detail="Research not found")
     
+    # Log research request details for monitoring
+    logger.info(f"Research request found - ID: {research_request.research_id}, Has results: {research_request.final_result is not None}")
+    
     # Convert to response format
     response_data = {
         "research_id": research_request.research_id,
@@ -526,24 +664,85 @@ async def get_research_result(research_id: str):
         "created_at": research_request.created_at,
         "completed_at": research_request.completed_at,
         "trace_log": research_request.trace_log,
-        "steps": [step.dict() for step in research_request.steps]
+        "steps": [step.model_dump() for step in research_request.steps],
+        "results": research_request.final_result  # Include the research results
     }
-    
-    # Add analysis data if available
-    if research_request.final_result and "frontend_results" in research_request.final_result:
-        frontend_results = research_request.final_result["frontend_results"]
-        response_data.update({
-            "workflow_steps": frontend_results.get("workflow_steps", []),
-            "results": frontend_results.get("results", {})
+
+    # Derive workflow_steps for UI
+    workflow_steps = []
+    for i, step in enumerate(research_request.steps):
+        workflow_steps.append({
+            "step_number": i + 1,
+            "step_id": step.step_id,
+            "step_type": str(step.step_type),
+            "description": step.description,
+            "status": str(step.status),
+            "duration_seconds": step.duration_seconds,
+            "timestamp": step.timestamp.isoformat() if step.timestamp else None,
+            "output_data": step.output_data,
+            "error_message": step.error_message
         })
-    elif research_request.final_result and "analysis" in research_request.final_result:
+
+    # Build results section from final_result
+    results = {}
+    if research_request.final_result:
+        processed = research_request.final_result.get("processed_articles", [])
+        top_keywords = research_request.final_result.get("top_keywords", [])
+        results = {
+            "processed_articles": processed,
+            "top_keywords": top_keywords,
+            "total_articles_processed": len(processed)
+        }
+
+    # Prefer newer fields; keep legacy analysis fallback
+    if not results and research_request.final_result and "analysis" in research_request.final_result:
         analysis = research_request.final_result["analysis"]
-        response_data.update({
-            "summary": analysis.get("summary"),
-            "key_findings": analysis.get("key_findings"),
-            "sources": analysis.get("sources"),
-            "confidence_score": analysis.get("confidence_score")
-        })
+        results = {
+            "processed_articles": analysis.get("sources", []),
+            "top_keywords": analysis.get("key_findings", []),
+            "total_articles_processed": len(analysis.get("sources", []))
+        }
+
+    # Build preview and report urls
+    def _build_preview_and_reports(r):
+        preview = None
+        if getattr(r, 'summary', None):
+            preview = str(getattr(r, 'summary'))
+        if not preview and r.final_result:
+            fr = r.final_result
+            titles = []
+            for a in fr.get('processed_articles', [])[:3]:
+                title = a.get('title') if isinstance(a, dict) else None
+                if title:
+                    titles.append(title)
+            keywords = fr.get('top_keywords', [])
+            if isinstance(keywords, list):
+                kw = ", ".join([k.get('keyword', k) if isinstance(k, dict) else str(k) for k in keywords[:5]])
+            else:
+                kw = None
+            parts = []
+            if titles:
+                parts.append("; ".join(titles))
+            if kw:
+                parts.append(f"Keywords: {kw}")
+            if parts:
+                preview = " | ".join(parts)
+        report_urls = {
+            "pdf": f"/research/{r.research_id}/export.pdf",
+            "docx": f"/research/{r.research_id}/export.docx",
+        }
+        return preview, report_urls
+
+    preview, report_urls = _build_preview_and_reports(research_request)
+
+    # Attach to response
+    if workflow_steps:
+        response_data["workflow_steps"] = workflow_steps
+    if results:
+        response_data["results"] = results
+    if preview:
+        response_data["preview"] = preview
+    response_data["report_urls"] = report_urls
     
     return ResearchResultResponse(**response_data)
 
@@ -563,18 +762,48 @@ async def get_all_research():
             "created_at": request.created_at,
             "completed_at": request.completed_at,
             "trace_log": request.trace_log,
-            "steps": [step.dict() for step in request.steps]
+            "steps": [step.model_dump() for step in request.steps]
         }
-        
-        # Add analysis data if available
-        if request.final_result and "analysis" in request.final_result:
-            analysis = request.final_result["analysis"]
-            response_data.update({
-                "summary": analysis.get("summary"),
-                "key_findings": analysis.get("key_findings"),
-                "sources": analysis.get("sources"),
-                "confidence_score": analysis.get("confidence_score")
+
+        # workflow_steps for list view
+        workflow_steps = []
+        for i, step in enumerate(request.steps):
+            workflow_steps.append({
+                "step_number": i + 1,
+                "step_id": step.step_id,
+                "step_type": str(step.step_type),
+                "description": step.description,
+                "status": str(step.status),
+                "duration_seconds": step.duration_seconds,
+                "timestamp": step.timestamp.isoformat() if step.timestamp else None,
+                "output_data": step.output_data,
+                "error_message": step.error_message
             })
+
+        # Build results from final_result
+        results_block = {}
+        if request.final_result:
+            processed = request.final_result.get("processed_articles", [])
+            top_keywords = request.final_result.get("top_keywords", [])
+            results_block = {
+                "processed_articles": processed,
+                "top_keywords": top_keywords,
+                "total_articles_processed": len(processed),
+                "research_summary": request.final_result.get("research_summary", "")
+            }
+        if not results_block and request.final_result and "analysis" in request.final_result:
+            analysis = request.final_result["analysis"]
+            results_block = {
+                "processed_articles": analysis.get("sources", []),
+                "top_keywords": analysis.get("key_findings", []),
+                "total_articles_processed": len(analysis.get("sources", [])),
+                "research_summary": analysis.get("research_summary", "")
+            }
+
+        if workflow_steps:
+            response_data["workflow_steps"] = workflow_steps
+        if results_block:
+            response_data["results"] = results_block
         
         results.append(ResearchResultResponse(**response_data))
     
@@ -616,8 +845,312 @@ async def health_check():
     """
     Health check endpoint
     """
-    return {"status": "healthy", "timestamp": datetime.utcnow()}
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc)}
+
+# Utility to build a simple PDF
+def _build_pdf_for_research(req: ResearchRequest) -> BytesIO:
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.platypus import (
+        SimpleDocTemplate,
+        Paragraph,
+        Spacer,
+        ListFlowable,
+        ListItem,
+        Table,
+        TableStyle,
+        PageBreak,
+    )
+    from reportlab.lib.units import inch
+    from reportlab.lib import colors
+
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=letter,
+        title=f"Research - {req.topic}",
+        leftMargin=0.75 * inch,
+        rightMargin=0.75 * inch,
+        topMargin=0.75 * inch,
+        bottomMargin=0.75 * inch,
+    )
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name="Small", parent=styles["Normal"], fontSize=9, leading=11))
+    styles.add(ParagraphStyle(name="Muted", parent=styles["Normal"], textColor=colors.gray))
+    styles.add(ParagraphStyle(name="H3", parent=styles["Heading2"], fontSize=12, leading=14))
+
+    elems = []
+    # Simple HTML/tag sanitizer for ReportLab paragraphs
+    import re as _re
+    import html as _html
+
+    def _clean_text(value) -> str:
+        s = str(value) if value is not None else ""
+        s = _html.unescape(s)
+        s = _re.sub(r"</?span[^>]*>", "", s, flags=_re.IGNORECASE)
+        s = _re.sub(r"<[^>]*>", "", s)
+        s = s.replace("<", "").replace(">", "")
+        s = _re.sub(r"\s+", " ", s).strip()
+        return s
+
+    def _coerce_keywords(kws):
+        out = []
+        for k in kws or []:
+            if isinstance(k, dict):
+                out.append(_clean_text(k.get("keyword") or k.get("text") or ""))
+            else:
+                out.append(_clean_text(k))
+        return [k for k in out if k]
+
+    # Header
+    elems.append(Paragraph(_clean_text(req.topic), styles['Title']))
+    meta = [
+        f"Status: {_clean_text(req.status)}",
+        f"Created: {_clean_text(req.created_at)}",
+    ]
+    if req.completed_at:
+        meta.append(f"Completed: {_clean_text(req.completed_at)}")
+    elems.append(Paragraph(" | ".join(meta), styles['Muted']))
+    elems.append(Spacer(1, 0.25 * inch))
+
+    # Summary
+    elems.append(Paragraph("Summary", styles['Heading2']))
+    summary_text = None
+    if getattr(req, 'summary', None):
+        summary_text = _clean_text(getattr(req, 'summary'))
+    elif req.final_result and req.final_result.get("research_summary"):
+        # Use AI-generated research summary
+        summary_text = _clean_text(req.final_result.get("research_summary"))
+    elif req.final_result:
+        # Derive a compact summary if not explicitly set
+        titles = []
+        for a in (req.final_result.get("processed_articles", []) or [])[:3]:
+            title = a.get("title") if isinstance(a, dict) else None
+            if title:
+                titles.append(_clean_text(title))
+        kw = ", ".join(_coerce_keywords(req.final_result.get("top_keywords")))
+        parts = []
+        if titles:
+            parts.append("; ".join(titles))
+        if kw:
+            parts.append(f"Top keywords: {kw}")
+        if parts:
+            summary_text = " | ".join(parts)
+    elems.append(Paragraph(_clean_text(summary_text or "No summary available."), styles['Normal']))
+    elems.append(Spacer(1, 0.2 * inch))
+
+    # Keywords
+    kws = _coerce_keywords(req.final_result.get("top_keywords") if getattr(req, 'final_result', None) else [])
+    if kws:
+        elems.append(Paragraph("Top Keywords", styles['H3']))
+        kw_items = [ListItem(Paragraph(_clean_text(k), styles['Normal'])) for k in kws]
+        elems.append(ListFlowable(kw_items, bulletType='bullet'))
+        elems.append(Spacer(1, 0.2 * inch))
+
+    # Workflow steps
+    elems.append(Paragraph("Workflow Steps", styles['Heading2']))
+    if req.steps:
+        step_items = []
+        for i, s in enumerate(req.steps, 1):
+            step_text = f"{i}. {s.step_type} - {s.status}: {s.description}"
+            step_items.append(ListItem(Paragraph(_clean_text(step_text), styles['Normal'])))
+        elems.append(ListFlowable(step_items, bulletType='1'))
+    else:
+        elems.append(Paragraph("No steps recorded.", styles['Small']))
+    elems.append(Spacer(1, 0.25 * inch))
+
+    # Articles table
+    elems.append(Paragraph("Sources Reviewed", styles['Heading2']))
+    processed = (req.final_result or {}).get("processed_articles", []) if getattr(req, 'final_result', None) else []
+    if processed:
+        data = [["Title", "Source", "URL", "Summary"]]
+        for art in processed:
+            if isinstance(art, dict):
+                title = _clean_text(art.get("title") or "-")
+                source = _clean_text(art.get("source") or art.get("site") or "-")
+                url = _clean_text(art.get("url") or art.get("link") or "-")
+                snippet = _clean_text(art.get("summary") or art.get("snippet") or art.get("description") or "-")
+            else:
+                title = _clean_text(str(art))
+                source = "-"
+                url = "-"
+                snippet = "-"
+            # Limit extremely long fields for PDF layout
+            def _truncate(t, n=180):
+                return (t[: n - 1] + "…") if len(t) > n else t
+            data.append([_truncate(title, 80), _truncate(source, 30), _truncate(url, 80), _truncate(snippet, 180)])
+
+        table = Table(data, repeatRows=1, colWidths=[2.3 * inch, 1.2 * inch, 2.3 * inch, 2.7 * inch])
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f0f0f0')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 9),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.HexColor('#cccccc')),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#fbfbfb')]),
+        ]))
+        elems.append(table)
+    else:
+        elems.append(Paragraph("No sources found.", styles['Small']))
+
+    elems.append(Spacer(1, 0.25 * inch))
+
+    # Footer with page numbers
+    def _add_page_number(canvas, _doc):
+        page_num = canvas.getPageNumber()
+        canvas.setFont("Helvetica", 9)
+        canvas.setFillColor(colors.gray)
+        canvas.drawRightString(letter[0] - 0.75 * inch, 0.5 * inch, f"Page {page_num}")
+
+    doc.build(elems, onFirstPage=_add_page_number, onLaterPages=_add_page_number)
+    buffer.seek(0)
+    return buffer
+
+# Utility to build a DOCX
+def _build_docx_for_research(req: ResearchRequest) -> BytesIO:
+    from docx import Document
+    from docx.shared import Pt, Inches
+    from docx.oxml.ns import qn
+    from docx.enum.text import WD_BREAK
+
+    # Sanitizer
+    import re as _re
+    import html as _html
+    def _clean_text(value) -> str:
+        s = str(value) if value is not None else ""
+        s = _html.unescape(s)
+        s = _re.sub(r"</?span[^>]*>", "", s, flags=_re.IGNORECASE)
+        s = _re.sub(r"<[^>]*>", "", s)
+        s = s.replace("<", "").replace(">", "")
+        s = _re.sub(r"\s+", " ", s).strip()
+        return s
+
+    def _coerce_keywords(kws):
+        out = []
+        for k in kws or []:
+            if isinstance(k, dict):
+                out.append(_clean_text(k.get("keyword") or k.get("text") or ""))
+            else:
+                out.append(_clean_text(k))
+        return [k for k in out if k]
+
+    doc = Document()
+    doc.core_properties.title = f"Research - {req.topic}"
+    doc.add_heading(f"{_clean_text(req.topic)}", 0)
+
+    meta_p = doc.add_paragraph()
+    meta_p.add_run(f"Status: {_clean_text(req.status)}\n").font.size = Pt(10)
+    meta_p.add_run(f"Created: {_clean_text(req.created_at)}\n").font.size = Pt(10)
+    if req.completed_at:
+        meta_p.add_run(f"Completed: {_clean_text(req.completed_at)}\n").font.size = Pt(10)
+
+    # Summary
+    doc.add_heading("Summary", level=1)
+    summary_text = None
+    if getattr(req, 'summary', None):
+        summary_text = _clean_text(getattr(req, 'summary'))
+    elif getattr(req, 'final_result', None) and req.final_result.get("research_summary"):
+        # Use AI-generated research summary
+        summary_text = _clean_text(req.final_result.get("research_summary"))
+    elif getattr(req, 'final_result', None):
+        titles = []
+        for a in (req.final_result.get("processed_articles", []) or [])[:3]:
+            title = a.get("title") if isinstance(a, dict) else None
+            if title:
+                titles.append(_clean_text(title))
+        kw = ", ".join(_coerce_keywords(req.final_result.get("top_keywords")))
+        parts = []
+        if titles:
+            parts.append("; ".join(titles))
+        if kw:
+            parts.append(f"Top keywords: {kw}")
+        if parts:
+            summary_text = " | ".join(parts)
+    doc.add_paragraph(_clean_text(summary_text or "No summary available."))
+
+    # Keywords
+    kws = _coerce_keywords(req.final_result.get("top_keywords") if getattr(req, 'final_result', None) else [])
+    if kws:
+        doc.add_heading("Top Keywords", level=2)
+        for k in kws:
+            doc.add_paragraph(_clean_text(k), style='List Bullet')
+
+    # Workflow steps
+    doc.add_heading("Workflow Steps", level=1)
+    if req.steps:
+        for i, s in enumerate(req.steps, 1):
+            doc.add_paragraph(f"{i}. {s.step_type} - {s.status}: {s.description}", style='List Number')
+    else:
+        doc.add_paragraph("No steps recorded.")
+
+    # Sources table
+    doc.add_heading("Sources Reviewed", level=1)
+    processed = (req.final_result or {}).get("processed_articles", []) if getattr(req, 'final_result', None) else []
+    if processed:
+        table = doc.add_table(rows=1, cols=4)
+        hdr_cells = table.rows[0].cells
+        hdr_cells[0].text = "Title"
+        hdr_cells[1].text = "Source"
+        hdr_cells[2].text = "URL"
+        hdr_cells[3].text = "Summary"
+        for art in processed:
+            if isinstance(art, dict):
+                title = _clean_text(art.get("title") or "-")
+                source = _clean_text(art.get("source") or art.get("site") or "-")
+                url = _clean_text(art.get("url") or art.get("link") or "-")
+                snippet = _clean_text(art.get("summary") or art.get("snippet") or art.get("description") or "-")
+            else:
+                title, source, url, snippet = _clean_text(str(art)), "-", "-", "-"
+            row_cells = table.add_row().cells
+            row_cells[0].text = title
+            row_cells[1].text = source
+            row_cells[2].text = url
+            row_cells[3].text = snippet
+    else:
+        doc.add_paragraph("No sources found.")
+
+    buffer = BytesIO()
+    doc.save(buffer)
+    buffer.seek(0)
+    return buffer
+
+@app.get("/research/{research_id}/export.pdf")
+async def export_research_pdf(research_id: str):
+    req = research_agent.get_research_request(research_id)
+    if not req:
+        raise HTTPException(status_code=404, detail="Research not found")
+    try:
+        pdf = _build_pdf_for_research(req)
+    except ModuleNotFoundError as e:
+        # ReportLab not installed
+        raise HTTPException(
+            status_code=501,
+            detail="PDF export requires the 'reportlab' package. Install with: pip install reportlab"
+        ) from e
+    return StreamingResponse(pdf, media_type="application/pdf", headers={
+        "Content-Disposition": f"attachment; filename=research_{research_id}.pdf"
+    })
+
+@app.get("/research/{research_id}/export.docx")
+async def export_research_docx(research_id: str):
+    req = research_agent.get_research_request(research_id)
+    if not req:
+        raise HTTPException(status_code=404, detail="Research not found")
+    try:
+        docx_io = _build_docx_for_research(req)
+    except ModuleNotFoundError as e:
+        # python-docx not installed
+        raise HTTPException(
+            status_code=501,
+            detail="DOCX export requires the 'python-docx' package. Install with: pip install python-docx"
+        ) from e
+    return StreamingResponse(docx_io, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document", headers={
+        "Content-Disposition": f"attachment; filename=research_{research_id}.docx"
+    })
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+

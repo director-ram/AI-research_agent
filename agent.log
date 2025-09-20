@@ -26,3 +26,220 @@
 2025-09-18 23:57:10,700 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Step 4: Result Persistence for topic: Healthcare centers facilities
 2025-09-18 23:57:10,713 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] Step 5: Return to Frontend for topic: Healthcare centers facilities
 2025-09-18 23:57:10,717 - ai_research_agent - INFO - [logger.py:50] - [80d74de6-22e4-4568-a79c-51861e862dc6] 5-step research workflow completed successfully for topic: Healthcare centers facilities
+2025-09-19 13:16:44,719 - ai_research_agent - INFO - [logger.py:50] - [f3b87470-4d29-4d81-9f23-b2b5de2e48e7] Starting 5-step research workflow for topic: AI in Healthcare
+2025-09-19 13:16:44,734 - ai_research_agent - INFO - [logger.py:50] - [f3b87470-4d29-4d81-9f23-b2b5de2e48e7] Step 1: Input Parsing for topic: AI in Healthcare
+2025-09-19 13:16:44,765 - ai_research_agent - INFO - [logger.py:50] - [f3b87470-4d29-4d81-9f23-b2b5de2e48e7] Step 2: Data Gathering for topic: AI in Healthcare
+2025-09-19 13:16:48,508 - ai_research_agent - INFO - [logger.py:50] - [f3b87470-4d29-4d81-9f23-b2b5de2e48e7] Step 3: Processing articles for topic: AI in Healthcare
+2025-09-19 13:16:50,096 - ai_research_agent - INFO - [logger.py:50] - [f3b87470-4d29-4d81-9f23-b2b5de2e48e7] Step 4: Result Persistence for topic: AI in Healthcare
+2025-09-19 13:16:50,126 - ai_research_agent - INFO - [logger.py:50] - [f3b87470-4d29-4d81-9f23-b2b5de2e48e7] Step 5: Return to Frontend for topic: AI in Healthcare
+2025-09-19 13:16:50,136 - ai_research_agent - INFO - [logger.py:50] - [f3b87470-4d29-4d81-9f23-b2b5de2e48e7] 5-step research workflow completed successfully for topic: AI in Healthcare
+2025-09-19 13:42:25,029 - ai_research_agent - INFO - [logger.py:50] - [e487432e-d639-442e-8156-2b01786f95c2] Starting 5-step research workflow for topic: Blockchain in Supply Chain
+2025-09-19 13:42:25,041 - ai_research_agent - INFO - [logger.py:50] - [e487432e-d639-442e-8156-2b01786f95c2] Step 1: Input Parsing for topic: Blockchain in Supply Chain
+2025-09-19 13:42:25,072 - ai_research_agent - INFO - [logger.py:50] - [e487432e-d639-442e-8156-2b01786f95c2] Step 2: Data Gathering for topic: Blockchain in Supply Chain
+2025-09-19 13:42:27,304 - ai_research_agent - INFO - [logger.py:50] - [e487432e-d639-442e-8156-2b01786f95c2] Step 3: Processing articles for topic: Blockchain in Supply Chain
+2025-09-19 13:42:28,901 - ai_research_agent - INFO - [logger.py:50] - [e487432e-d639-442e-8156-2b01786f95c2] Step 4: Result Persistence for topic: Blockchain in Supply Chain
+2025-09-19 13:42:28,928 - ai_research_agent - INFO - [logger.py:50] - [e487432e-d639-442e-8156-2b01786f95c2] Step 5: Return to Frontend for topic: Blockchain in Supply Chain
+2025-09-19 13:42:28,934 - ai_research_agent - INFO - [logger.py:50] - [e487432e-d639-442e-8156-2b01786f95c2] 5-step research workflow completed successfully for topic: Blockchain in Supply Chain
+2025-09-19 13:46:49,935 - ai_research_agent - INFO - [logger.py:50] - [63d45ca4-cf23-48c9-9aea-4b6db2e4b096] Starting 5-step research workflow for topic: Generative AI in Education
+2025-09-19 13:46:49,942 - ai_research_agent - INFO - [logger.py:50] - [63d45ca4-cf23-48c9-9aea-4b6db2e4b096] Step 1: Input Parsing for topic: Generative AI in Education
+2025-09-19 13:46:49,966 - ai_research_agent - INFO - [logger.py:50] - [63d45ca4-cf23-48c9-9aea-4b6db2e4b096] Step 2: Data Gathering for topic: Generative AI in Education
+2025-09-19 13:46:52,910 - ai_research_agent - INFO - [logger.py:50] - [63d45ca4-cf23-48c9-9aea-4b6db2e4b096] Step 3: Processing articles for topic: Generative AI in Education
+2025-09-19 13:46:54,532 - ai_research_agent - INFO - [logger.py:50] - [63d45ca4-cf23-48c9-9aea-4b6db2e4b096] Step 4: Result Persistence for topic: Generative AI in Education
+2025-09-19 13:46:54,556 - ai_research_agent - INFO - [logger.py:50] - [63d45ca4-cf23-48c9-9aea-4b6db2e4b096] Step 5: Return to Frontend for topic: Generative AI in Education
+2025-09-19 13:46:54,569 - ai_research_agent - INFO - [logger.py:50] - [63d45ca4-cf23-48c9-9aea-4b6db2e4b096] 5-step research workflow completed successfully for topic: Generative AI in Education
+2025-09-19 13:49:45,831 - ai_research_agent - INFO - [logger.py:50] - [11ce449e-7a09-46b0-99ef-18b066e7444e] Starting 5-step research workflow for topic: Climate Tech Startups
+2025-09-19 13:49:45,839 - ai_research_agent - INFO - [logger.py:50] - [11ce449e-7a09-46b0-99ef-18b066e7444e] Step 1: Input Parsing for topic: Climate Tech Startups
+2025-09-19 13:49:45,868 - ai_research_agent - INFO - [logger.py:50] - [11ce449e-7a09-46b0-99ef-18b066e7444e] Step 2: Data Gathering for topic: Climate Tech Startups
+2025-09-19 13:49:49,042 - ai_research_agent - INFO - [logger.py:50] - [11ce449e-7a09-46b0-99ef-18b066e7444e] Step 3: Processing articles for topic: Climate Tech Startups
+2025-09-19 13:49:50,584 - ai_research_agent - INFO - [logger.py:50] - [11ce449e-7a09-46b0-99ef-18b066e7444e] Step 4: Result Persistence for topic: Climate Tech Startups
+2025-09-19 13:49:50,598 - ai_research_agent - INFO - [logger.py:50] - [11ce449e-7a09-46b0-99ef-18b066e7444e] Step 5: Return to Frontend for topic: Climate Tech Startups
+2025-09-19 13:49:50,603 - ai_research_agent - INFO - [logger.py:50] - [11ce449e-7a09-46b0-99ef-18b066e7444e] 5-step research workflow completed successfully for topic: Climate Tech Startups
+2025-09-19 13:53:31,856 - ai_research_agent - INFO - [logger.py:50] - [b7d412c9-f737-42b5-bc0b-e6c256e62191] Starting 5-step research workflow for topic: Quantum Computing Basics
+2025-09-19 13:53:31,868 - ai_research_agent - INFO - [logger.py:50] - [b7d412c9-f737-42b5-bc0b-e6c256e62191] Step 1: Input Parsing for topic: Quantum Computing Basics
+2025-09-19 13:53:31,894 - ai_research_agent - INFO - [logger.py:50] - [b7d412c9-f737-42b5-bc0b-e6c256e62191] Step 2: Data Gathering for topic: Quantum Computing Basics
+2025-09-19 13:53:42,492 - ai_research_agent - INFO - [logger.py:50] - [b7d412c9-f737-42b5-bc0b-e6c256e62191] Step 3: Processing articles for topic: Quantum Computing Basics
+2025-09-19 13:53:44,087 - ai_research_agent - INFO - [logger.py:50] - [b7d412c9-f737-42b5-bc0b-e6c256e62191] Step 4: Result Persistence for topic: Quantum Computing Basics
+2025-09-19 13:53:44,110 - ai_research_agent - INFO - [logger.py:50] - [b7d412c9-f737-42b5-bc0b-e6c256e62191] Step 5: Return to Frontend for topic: Quantum Computing Basics
+2025-09-19 13:53:44,117 - ai_research_agent - INFO - [logger.py:50] - [b7d412c9-f737-42b5-bc0b-e6c256e62191] 5-step research workflow completed successfully for topic: Quantum Computing Basics
+2025-09-19 13:58:23,360 - ai_research_agent - INFO - [logger.py:50] - [7cce1705-ba43-4231-a278-c2fe873c6ad3] Starting 5-step research workflow for topic: AI resume  builder for low cost
+2025-09-19 13:58:23,367 - ai_research_agent - INFO - [logger.py:50] - [7cce1705-ba43-4231-a278-c2fe873c6ad3] Step 1: Input Parsing for topic: AI resume  builder for low cost
+2025-09-19 13:58:23,385 - ai_research_agent - INFO - [logger.py:50] - [7cce1705-ba43-4231-a278-c2fe873c6ad3] Step 2: Data Gathering for topic: AI resume  builder for low cost
+2025-09-19 13:58:26,127 - ai_research_agent - INFO - [logger.py:50] - [7cce1705-ba43-4231-a278-c2fe873c6ad3] Step 3: Processing articles for topic: AI resume  builder for low cost
+2025-09-19 13:58:27,709 - ai_research_agent - INFO - [logger.py:50] - [7cce1705-ba43-4231-a278-c2fe873c6ad3] Step 4: Result Persistence for topic: AI resume  builder for low cost
+2025-09-19 13:58:27,725 - ai_research_agent - INFO - [logger.py:50] - [7cce1705-ba43-4231-a278-c2fe873c6ad3] Step 5: Return to Frontend for topic: AI resume  builder for low cost
+2025-09-19 13:58:27,729 - ai_research_agent - INFO - [logger.py:50] - [7cce1705-ba43-4231-a278-c2fe873c6ad3] 5-step research workflow completed successfully for topic: AI resume  builder for low cost
+2025-09-19 14:03:23,475 - ai_research_agent - INFO - [logger.py:50] - [27d77904-886e-4a56-a63a-13d4fa63800f] Starting 5-step research workflow for topic: Quantum Computing Basics
+2025-09-19 14:03:23,484 - ai_research_agent - INFO - [logger.py:50] - [27d77904-886e-4a56-a63a-13d4fa63800f] Step 1: Input Parsing for topic: Quantum Computing Basics
+2025-09-19 14:03:23,507 - ai_research_agent - INFO - [logger.py:50] - [27d77904-886e-4a56-a63a-13d4fa63800f] Step 2: Data Gathering for topic: Quantum Computing Basics
+2025-09-19 14:03:25,161 - ai_research_agent - INFO - [logger.py:50] - [27d77904-886e-4a56-a63a-13d4fa63800f] Step 3: Processing articles for topic: Quantum Computing Basics
+2025-09-19 14:03:26,752 - ai_research_agent - INFO - [logger.py:50] - [27d77904-886e-4a56-a63a-13d4fa63800f] Step 4: Result Persistence for topic: Quantum Computing Basics
+2025-09-19 14:03:26,762 - ai_research_agent - INFO - [logger.py:50] - [27d77904-886e-4a56-a63a-13d4fa63800f] Step 5: Return to Frontend for topic: Quantum Computing Basics
+2025-09-19 14:03:26,766 - ai_research_agent - INFO - [logger.py:50] - [27d77904-886e-4a56-a63a-13d4fa63800f] 5-step research workflow completed successfully for topic: Quantum Computing Basics
+2025-09-19 14:06:10,048 - ai_research_agent - INFO - [logger.py:50] - [ed8279b7-89c8-4036-8897-facfc1edf182] Starting 5-step research workflow for topic: AI in Healthcare
+2025-09-19 14:06:10,055 - ai_research_agent - INFO - [logger.py:50] - [ed8279b7-89c8-4036-8897-facfc1edf182] Step 1: Input Parsing for topic: AI in Healthcare
+2025-09-19 14:06:10,070 - ai_research_agent - INFO - [logger.py:50] - [ed8279b7-89c8-4036-8897-facfc1edf182] Step 2: Data Gathering for topic: AI in Healthcare
+2025-09-19 14:06:12,012 - ai_research_agent - INFO - [logger.py:50] - [ed8279b7-89c8-4036-8897-facfc1edf182] Step 3: Processing articles for topic: AI in Healthcare
+2025-09-19 14:06:13,591 - ai_research_agent - INFO - [logger.py:50] - [ed8279b7-89c8-4036-8897-facfc1edf182] Step 4: Result Persistence for topic: AI in Healthcare
+2025-09-19 14:06:13,608 - ai_research_agent - INFO - [logger.py:50] - [ed8279b7-89c8-4036-8897-facfc1edf182] Step 5: Return to Frontend for topic: AI in Healthcare
+2025-09-19 14:06:13,616 - ai_research_agent - INFO - [logger.py:50] - [ed8279b7-89c8-4036-8897-facfc1edf182] 5-step research workflow completed successfully for topic: AI in Healthcare
+2025-09-19 14:11:52,143 - ai_research_agent - INFO - [logger.py:50] - [c5e08a37-b09b-429e-b0be-7a4a35193255] Starting 5-step research workflow for topic: Blockchain in Supply Chain
+2025-09-19 14:11:52,154 - ai_research_agent - INFO - [logger.py:50] - [c5e08a37-b09b-429e-b0be-7a4a35193255] Step 1: Input Parsing for topic: Blockchain in Supply Chain
+2025-09-19 14:11:52,206 - ai_research_agent - INFO - [logger.py:50] - [c5e08a37-b09b-429e-b0be-7a4a35193255] Step 2: Data Gathering for topic: Blockchain in Supply Chain
+2025-09-19 14:11:54,311 - ai_research_agent - INFO - [logger.py:50] - [c5e08a37-b09b-429e-b0be-7a4a35193255] Step 3: Processing articles for topic: Blockchain in Supply Chain
+2025-09-19 14:11:55,910 - ai_research_agent - INFO - [logger.py:50] - [c5e08a37-b09b-429e-b0be-7a4a35193255] Step 4: Result Persistence for topic: Blockchain in Supply Chain
+2025-09-19 14:11:55,945 - ai_research_agent - INFO - [logger.py:50] - [c5e08a37-b09b-429e-b0be-7a4a35193255] Step 5: Return to Frontend for topic: Blockchain in Supply Chain
+2025-09-19 14:11:55,982 - ai_research_agent - INFO - [logger.py:50] - [c5e08a37-b09b-429e-b0be-7a4a35193255] 5-step research workflow completed successfully for topic: Blockchain in Supply Chain
+2025-09-19 14:17:01,404 - ai_research_agent - INFO - [logger.py:50] - [88949b6e-e0c8-428c-bf17-5fcb23df1556] Starting 5-step research workflow for topic: Blockchain in Supply Chain
+2025-09-19 14:17:01,410 - ai_research_agent - INFO - [logger.py:50] - [88949b6e-e0c8-428c-bf17-5fcb23df1556] Step 1: Input Parsing for topic: Blockchain in Supply Chain
+2025-09-19 14:17:01,427 - ai_research_agent - INFO - [logger.py:50] - [88949b6e-e0c8-428c-bf17-5fcb23df1556] Step 2: Data Gathering for topic: Blockchain in Supply Chain
+2025-09-19 14:17:03,340 - ai_research_agent - INFO - [logger.py:50] - [88949b6e-e0c8-428c-bf17-5fcb23df1556] Step 3: Processing articles for topic: Blockchain in Supply Chain
+2025-09-19 14:17:04,924 - ai_research_agent - INFO - [logger.py:50] - [88949b6e-e0c8-428c-bf17-5fcb23df1556] Step 4: Result Persistence for topic: Blockchain in Supply Chain
+2025-09-19 14:17:04,945 - ai_research_agent - INFO - [logger.py:50] - [88949b6e-e0c8-428c-bf17-5fcb23df1556] Step 5: Return to Frontend for topic: Blockchain in Supply Chain
+2025-09-19 14:17:04,951 - ai_research_agent - INFO - [logger.py:50] - [88949b6e-e0c8-428c-bf17-5fcb23df1556] 5-step research workflow completed successfully for topic: Blockchain in Supply Chain
+2025-09-19 15:09:06,871 - ai_research_agent - INFO - [logger.py:50] - [3c398bd1-0d08-468e-8231-678b36513906] Starting research for topic: Climate Tech Startups
+2025-09-19 15:09:06,900 - ai_research_agent - INFO - [logger.py:50] - [3c398bd1-0d08-468e-8231-678b36513906] Step 1: Input Parsing for topic: Climate Tech Startups
+2025-09-19 15:09:06,949 - ai_research_agent - INFO - [logger.py:50] - [3c398bd1-0d08-468e-8231-678b36513906] Step 2: Data Gathering for topic: Climate Tech Startups
+2025-09-19 15:09:11,985 - ai_research_agent - INFO - [logger.py:50] - [3c398bd1-0d08-468e-8231-678b36513906] Step 3: Processing articles for topic: Climate Tech Startups
+2025-09-19 15:09:13,617 - ai_research_agent - INFO - [logger.py:50] - [3c398bd1-0d08-468e-8231-678b36513906] Step 4: Result Persistence for topic: Climate Tech Startups
+2025-09-19 15:09:13,737 - ai_research_agent - INFO - [logger.py:50] - [3c398bd1-0d08-468e-8231-678b36513906] Step 5: Return to Frontend for topic: Climate Tech Startups
+2025-09-19 15:09:13,767 - ai_research_agent - INFO - [logger.py:50] - [3c398bd1-0d08-468e-8231-678b36513906] Research completed successfully for topic: Climate Tech Startups
+2025-09-19 15:17:07,725 - ai_research_agent - INFO - [logger.py:50] - [58b6c42b-3bf9-409c-ac6b-dd2a19a57e8d] Starting research for topic: Quantum Computing Basics
+2025-09-19 15:17:07,741 - ai_research_agent - INFO - [logger.py:50] - [58b6c42b-3bf9-409c-ac6b-dd2a19a57e8d] Step 1: Input Parsing for topic: Quantum Computing Basics
+2025-09-19 15:17:07,810 - ai_research_agent - INFO - [logger.py:50] - [58b6c42b-3bf9-409c-ac6b-dd2a19a57e8d] Step 2: Data Gathering for topic: Quantum Computing Basics
+2025-09-19 15:17:12,371 - ai_research_agent - INFO - [logger.py:50] - [58b6c42b-3bf9-409c-ac6b-dd2a19a57e8d] Step 3: Processing articles for topic: Quantum Computing Basics
+2025-09-19 15:17:13,970 - ai_research_agent - INFO - [logger.py:50] - [58b6c42b-3bf9-409c-ac6b-dd2a19a57e8d] Step 4: Result Persistence for topic: Quantum Computing Basics
+2025-09-19 15:17:14,028 - ai_research_agent - INFO - [logger.py:50] - [58b6c42b-3bf9-409c-ac6b-dd2a19a57e8d] Step 5: Return to Frontend for topic: Quantum Computing Basics
+2025-09-19 15:17:14,055 - ai_research_agent - INFO - [logger.py:50] - [58b6c42b-3bf9-409c-ac6b-dd2a19a57e8d] Research completed successfully for topic: Quantum Computing Basics
+2025-09-19 15:20:37,200 - ai_research_agent - INFO - [logger.py:50] - [c88d1226-595f-4080-af7e-50a8457b82d1] Starting research for topic: Blockchain in Supply Chain
+2025-09-19 15:20:37,223 - ai_research_agent - INFO - [logger.py:50] - [c88d1226-595f-4080-af7e-50a8457b82d1] Step 1: Input Parsing for topic: Blockchain in Supply Chain
+2025-09-19 15:20:37,302 - ai_research_agent - INFO - [logger.py:50] - [c88d1226-595f-4080-af7e-50a8457b82d1] Step 2: Data Gathering for topic: Blockchain in Supply Chain
+2025-09-19 15:20:40,742 - ai_research_agent - INFO - [logger.py:50] - [c88d1226-595f-4080-af7e-50a8457b82d1] Step 3: Processing articles for topic: Blockchain in Supply Chain
+2025-09-19 15:20:42,363 - ai_research_agent - INFO - [logger.py:50] - [c88d1226-595f-4080-af7e-50a8457b82d1] Step 4: Result Persistence for topic: Blockchain in Supply Chain
+2025-09-19 15:20:42,401 - ai_research_agent - INFO - [logger.py:50] - [c88d1226-595f-4080-af7e-50a8457b82d1] Step 5: Return to Frontend for topic: Blockchain in Supply Chain
+2025-09-19 15:20:42,433 - ai_research_agent - INFO - [logger.py:50] - [c88d1226-595f-4080-af7e-50a8457b82d1] Research completed successfully for topic: Blockchain in Supply Chain
+2025-09-19 15:34:39,978 - ai_research_agent - INFO - [logger.py:50] - [68fd693a-c0fb-4b4a-90dd-37a0b9ebf383] Starting research for topic: Generative AI in Education
+2025-09-19 15:34:39,999 - ai_research_agent - INFO - [logger.py:50] - [68fd693a-c0fb-4b4a-90dd-37a0b9ebf383] Step 1: Input Parsing for topic: Generative AI in Education
+2025-09-19 15:34:40,072 - ai_research_agent - INFO - [logger.py:50] - [68fd693a-c0fb-4b4a-90dd-37a0b9ebf383] Step 2: Data Gathering for topic: Generative AI in Education
+2025-09-19 15:34:45,669 - ai_research_agent - INFO - [logger.py:50] - [68fd693a-c0fb-4b4a-90dd-37a0b9ebf383] Step 3: Processing articles for topic: Generative AI in Education
+2025-09-19 15:34:47,286 - ai_research_agent - INFO - [logger.py:50] - [68fd693a-c0fb-4b4a-90dd-37a0b9ebf383] Step 4: Result Persistence for topic: Generative AI in Education
+2025-09-19 15:34:47,361 - ai_research_agent - INFO - [logger.py:50] - [68fd693a-c0fb-4b4a-90dd-37a0b9ebf383] Step 5: Return to Frontend for topic: Generative AI in Education
+2025-09-19 15:34:47,390 - ai_research_agent - INFO - [logger.py:50] - [68fd693a-c0fb-4b4a-90dd-37a0b9ebf383] Research completed successfully for topic: Generative AI in Education
+2025-09-19 15:39:29,049 - ai_research_agent - INFO - [logger.py:50] - [de4b03e1-3fcf-4393-b2c0-99467717b30c] Starting research for topic: resume enhancer ai
+2025-09-19 15:39:29,058 - ai_research_agent - INFO - [logger.py:50] - [de4b03e1-3fcf-4393-b2c0-99467717b30c] Step 1: Input Parsing for topic: resume enhancer ai
+2025-09-19 15:39:29,076 - ai_research_agent - INFO - [logger.py:50] - [de4b03e1-3fcf-4393-b2c0-99467717b30c] Step 2: Data Gathering for topic: resume enhancer ai
+2025-09-19 15:39:31,217 - ai_research_agent - INFO - [logger.py:50] - [de4b03e1-3fcf-4393-b2c0-99467717b30c] Step 3: Processing articles for topic: resume enhancer ai
+2025-09-19 15:39:32,798 - ai_research_agent - INFO - [logger.py:50] - [de4b03e1-3fcf-4393-b2c0-99467717b30c] Step 4: Result Persistence for topic: resume enhancer ai
+2025-09-19 15:39:32,823 - ai_research_agent - INFO - [logger.py:50] - [de4b03e1-3fcf-4393-b2c0-99467717b30c] Step 5: Return to Frontend for topic: resume enhancer ai
+2025-09-19 15:39:32,834 - ai_research_agent - INFO - [logger.py:50] - [de4b03e1-3fcf-4393-b2c0-99467717b30c] Research completed successfully for topic: resume enhancer ai
+2025-09-19 18:44:40,288 - ai_research_agent - INFO - [logger.py:50] - [4b395604-dc4d-481e-8698-da7adc9af139] Starting research for topic: AI in Healthcare
+2025-09-19 18:44:40,295 - ai_research_agent - INFO - [logger.py:50] - [4b395604-dc4d-481e-8698-da7adc9af139] Step 1: Input Parsing for topic: AI in Healthcare
+2025-09-19 18:44:40,319 - ai_research_agent - INFO - [logger.py:50] - [4b395604-dc4d-481e-8698-da7adc9af139] Step 2: Data Gathering for topic: AI in Healthcare
+2025-09-19 18:44:44,170 - ai_research_agent - INFO - [logger.py:50] - [4b395604-dc4d-481e-8698-da7adc9af139] Step 3: Processing articles for topic: AI in Healthcare
+2025-09-19 18:44:45,752 - ai_research_agent - INFO - [logger.py:50] - [4b395604-dc4d-481e-8698-da7adc9af139] Step 4: Result Persistence for topic: AI in Healthcare
+2025-09-19 18:44:45,773 - ai_research_agent - INFO - [logger.py:50] - [4b395604-dc4d-481e-8698-da7adc9af139] Step 5: Return to Frontend for topic: AI in Healthcare
+2025-09-19 18:44:45,780 - ai_research_agent - INFO - [logger.py:50] - [4b395604-dc4d-481e-8698-da7adc9af139] Research completed successfully for topic: AI in Healthcare
+2025-09-20 11:19:27,879 - ai_research_agent - INFO - [logger.py:50] - [14fe1c9c-5cf0-4e74-94c3-12d4d0513ea5] Starting research for topic: test AI integration
+2025-09-20 11:19:27,892 - ai_research_agent - INFO - [logger.py:50] - [14fe1c9c-5cf0-4e74-94c3-12d4d0513ea5] Step 1: Input Parsing for topic: test AI integration
+2025-09-20 11:19:27,911 - ai_research_agent - INFO - [logger.py:50] - [14fe1c9c-5cf0-4e74-94c3-12d4d0513ea5] Step 2: Data Gathering for topic: test AI integration
+2025-09-20 11:19:30,809 - ai_research_agent - INFO - [logger.py:50] - [14fe1c9c-5cf0-4e74-94c3-12d4d0513ea5] Step 3: Processing articles for topic: test AI integration
+2025-09-20 11:23:08,947 - ai_research_agent - INFO - [logger.py:50] - [14fe1c9c-5cf0-4e74-94c3-12d4d0513ea5] Step 4: Result Persistence for topic: test AI integration
+2025-09-20 11:23:08,968 - ai_research_agent - INFO - [logger.py:50] - [14fe1c9c-5cf0-4e74-94c3-12d4d0513ea5] Step 5: Return to Frontend for topic: test AI integration
+2025-09-20 11:23:08,978 - ai_research_agent - INFO - [logger.py:50] - [14fe1c9c-5cf0-4e74-94c3-12d4d0513ea5] Research completed successfully for topic: test AI integration
+2025-09-20 11:23:37,570 - ai_research_agent - INFO - [logger.py:50] - [0cc0df37-06ed-47cc-9f97-a2e8cd0fe553] Starting research for topic: Quantum Computing Basics
+2025-09-20 11:23:37,658 - ai_research_agent - INFO - [logger.py:50] - [0cc0df37-06ed-47cc-9f97-a2e8cd0fe553] Step 1: Input Parsing for topic: Quantum Computing Basics
+2025-09-20 11:23:37,843 - ai_research_agent - INFO - [logger.py:50] - [0cc0df37-06ed-47cc-9f97-a2e8cd0fe553] Step 2: Data Gathering for topic: Quantum Computing Basics
+2025-09-20 11:23:43,015 - ai_research_agent - INFO - [logger.py:50] - [0cc0df37-06ed-47cc-9f97-a2e8cd0fe553] Step 3: Processing articles for topic: Quantum Computing Basics
+2025-09-20 11:26:33,758 - ai_research_agent - INFO - [logger.py:50] - [0cc0df37-06ed-47cc-9f97-a2e8cd0fe553] Step 4: Result Persistence for topic: Quantum Computing Basics
+2025-09-20 11:26:45,050 - ai_research_agent - INFO - [logger.py:50] - [0cc0df37-06ed-47cc-9f97-a2e8cd0fe553] Step 5: Return to Frontend for topic: Quantum Computing Basics
+2025-09-20 11:26:45,172 - ai_research_agent - INFO - [logger.py:50] - [0cc0df37-06ed-47cc-9f97-a2e8cd0fe553] Research completed successfully for topic: Quantum Computing Basics
+2025-09-20 11:28:57,463 - ai_research_agent - INFO - [logger.py:50] - [c1befab1-4154-4ff1-b14f-d6f1206d90b0] Starting research for topic: Machine Learning in Finance
+2025-09-20 11:28:57,481 - ai_research_agent - INFO - [logger.py:50] - [c1befab1-4154-4ff1-b14f-d6f1206d90b0] Step 1: Input Parsing for topic: Machine Learning in Finance
+2025-09-20 11:28:57,513 - ai_research_agent - INFO - [logger.py:50] - [c1befab1-4154-4ff1-b14f-d6f1206d90b0] Step 2: Data Gathering for topic: Machine Learning in Finance
+2025-09-20 11:29:00,350 - ai_research_agent - INFO - [logger.py:50] - [c1befab1-4154-4ff1-b14f-d6f1206d90b0] Step 3: Processing articles for topic: Machine Learning in Finance
+2025-09-20 11:29:47,239 - ai_research_agent - INFO - [logger.py:50] - [c1befab1-4154-4ff1-b14f-d6f1206d90b0] Step 4: Result Persistence for topic: Machine Learning in Finance
+2025-09-20 11:29:47,270 - ai_research_agent - INFO - [logger.py:50] - [c1befab1-4154-4ff1-b14f-d6f1206d90b0] Step 5: Return to Frontend for topic: Machine Learning in Finance
+2025-09-20 11:29:47,278 - ai_research_agent - INFO - [logger.py:50] - [c1befab1-4154-4ff1-b14f-d6f1206d90b0] Research completed successfully for topic: Machine Learning in Finance
+2025-09-20 11:32:46,971 - ai_research_agent - INFO - [logger.py:50] - [db80c7ce-0b09-452e-8886-e9d6aff44792] Starting research for topic: Blockchain Technology Trends
+2025-09-20 11:32:46,980 - ai_research_agent - INFO - [logger.py:50] - [db80c7ce-0b09-452e-8886-e9d6aff44792] Step 1: Input Parsing for topic: Blockchain Technology Trends
+2025-09-20 11:32:46,995 - ai_research_agent - INFO - [logger.py:50] - [db80c7ce-0b09-452e-8886-e9d6aff44792] Step 2: Data Gathering for topic: Blockchain Technology Trends
+2025-09-20 11:32:49,549 - ai_research_agent - INFO - [logger.py:50] - [db80c7ce-0b09-452e-8886-e9d6aff44792] Step 3: Processing articles for topic: Blockchain Technology Trends
+2025-09-20 11:34:01,026 - ai_research_agent - INFO - [logger.py:50] - [db80c7ce-0b09-452e-8886-e9d6aff44792] Step 4: Result Persistence for topic: Blockchain Technology Trends
+2025-09-20 11:34:01,044 - ai_research_agent - INFO - [logger.py:50] - [db80c7ce-0b09-452e-8886-e9d6aff44792] Step 5: Return to Frontend for topic: Blockchain Technology Trends
+2025-09-20 11:34:01,049 - ai_research_agent - INFO - [logger.py:50] - [db80c7ce-0b09-452e-8886-e9d6aff44792] Research completed successfully for topic: Blockchain Technology Trends
+2025-09-20 11:36:01,952 - ai_research_agent - INFO - [logger.py:50] - [eda70c0a-38c7-42a3-8c37-03b696455d3b] Starting research for topic: Generative AI in Education
+2025-09-20 11:36:01,961 - ai_research_agent - INFO - [logger.py:50] - [eda70c0a-38c7-42a3-8c37-03b696455d3b] Step 1: Input Parsing for topic: Generative AI in Education
+2025-09-20 11:36:02,005 - ai_research_agent - INFO - [logger.py:50] - [eda70c0a-38c7-42a3-8c37-03b696455d3b] Step 2: Data Gathering for topic: Generative AI in Education
+2025-09-20 11:36:04,618 - ai_research_agent - INFO - [logger.py:50] - [eda70c0a-38c7-42a3-8c37-03b696455d3b] Step 3: Processing articles for topic: Generative AI in Education
+2025-09-20 11:38:14,242 - ai_research_agent - INFO - [logger.py:50] - [eda70c0a-38c7-42a3-8c37-03b696455d3b] Step 4: Result Persistence for topic: Generative AI in Education
+2025-09-20 11:38:14,253 - ai_research_agent - INFO - [logger.py:50] - [eda70c0a-38c7-42a3-8c37-03b696455d3b] Step 5: Return to Frontend for topic: Generative AI in Education
+2025-09-20 11:38:14,260 - ai_research_agent - INFO - [logger.py:50] - [eda70c0a-38c7-42a3-8c37-03b696455d3b] Research completed successfully for topic: Generative AI in Education
+2025-09-20 11:45:13,483 - ai_research_agent - INFO - [logger.py:50] - [4740531d-4914-4ff0-b12a-707b9f1f7dce] Starting research for topic: Quantum Computing Applications
+2025-09-20 11:45:13,492 - ai_research_agent - INFO - [logger.py:50] - [4740531d-4914-4ff0-b12a-707b9f1f7dce] Step 1: Input Parsing for topic: Quantum Computing Applications
+2025-09-20 11:45:13,507 - ai_research_agent - INFO - [logger.py:50] - [4740531d-4914-4ff0-b12a-707b9f1f7dce] Step 2: Data Gathering for topic: Quantum Computing Applications
+2025-09-20 11:45:16,006 - ai_research_agent - INFO - [logger.py:50] - [4740531d-4914-4ff0-b12a-707b9f1f7dce] Step 3: Processing articles for topic: Quantum Computing Applications
+2025-09-20 11:46:54,765 - ai_research_agent - INFO - [logger.py:50] - [4740531d-4914-4ff0-b12a-707b9f1f7dce] Step 4: Result Persistence for topic: Quantum Computing Applications
+2025-09-20 11:46:54,792 - ai_research_agent - INFO - [logger.py:50] - [4740531d-4914-4ff0-b12a-707b9f1f7dce] Step 5: Return to Frontend for topic: Quantum Computing Applications
+2025-09-20 11:46:54,800 - ai_research_agent - INFO - [logger.py:50] - [4740531d-4914-4ff0-b12a-707b9f1f7dce] Research completed successfully for topic: Quantum Computing Applications
+2025-09-20 11:47:56,376 - ai_research_agent - INFO - [logger.py:50] - [247aec30-67a8-4d71-b9fd-b3bbeb19e68d] Starting research for topic: Artificial Intelligence in Healthcare
+2025-09-20 11:47:56,385 - ai_research_agent - INFO - [logger.py:50] - [247aec30-67a8-4d71-b9fd-b3bbeb19e68d] Step 1: Input Parsing for topic: Artificial Intelligence in Healthcare
+2025-09-20 11:47:56,401 - ai_research_agent - INFO - [logger.py:50] - [247aec30-67a8-4d71-b9fd-b3bbeb19e68d] Step 2: Data Gathering for topic: Artificial Intelligence in Healthcare
+2025-09-20 11:47:58,822 - ai_research_agent - INFO - [logger.py:50] - [247aec30-67a8-4d71-b9fd-b3bbeb19e68d] Step 3: Processing articles for topic: Artificial Intelligence in Healthcare
+2025-09-20 11:48:44,820 - ai_research_agent - INFO - [logger.py:50] - [247aec30-67a8-4d71-b9fd-b3bbeb19e68d] Step 4: Result Persistence for topic: Artificial Intelligence in Healthcare
+2025-09-20 11:49:01,654 - ai_research_agent - INFO - [logger.py:50] - [247aec30-67a8-4d71-b9fd-b3bbeb19e68d] Step 5: Return to Frontend for topic: Artificial Intelligence in Healthcare
+2025-09-20 11:49:01,660 - ai_research_agent - INFO - [logger.py:50] - [247aec30-67a8-4d71-b9fd-b3bbeb19e68d] Research completed successfully for topic: Artificial Intelligence in Healthcare
+2025-09-20 11:50:42,549 - ai_research_agent - INFO - [logger.py:50] - [99ab800d-8232-4b44-935b-4f85fc5e5604] Starting research for topic: Machine Learning in Finance
+2025-09-20 11:50:42,560 - ai_research_agent - INFO - [logger.py:50] - [99ab800d-8232-4b44-935b-4f85fc5e5604] Step 1: Input Parsing for topic: Machine Learning in Finance
+2025-09-20 11:50:42,578 - ai_research_agent - INFO - [logger.py:50] - [99ab800d-8232-4b44-935b-4f85fc5e5604] Step 2: Data Gathering for topic: Machine Learning in Finance
+2025-09-20 11:50:44,815 - ai_research_agent - INFO - [logger.py:50] - [99ab800d-8232-4b44-935b-4f85fc5e5604] Step 3: Processing articles for topic: Machine Learning in Finance
+2025-09-20 11:51:37,481 - ai_research_agent - INFO - [logger.py:50] - [99ab800d-8232-4b44-935b-4f85fc5e5604] Step 4: Result Persistence for topic: Machine Learning in Finance
+2025-09-20 11:52:25,749 - ai_research_agent - INFO - [logger.py:50] - [99ab800d-8232-4b44-935b-4f85fc5e5604] Step 5: Return to Frontend for topic: Machine Learning in Finance
+2025-09-20 11:52:25,752 - ai_research_agent - INFO - [logger.py:50] - [99ab800d-8232-4b44-935b-4f85fc5e5604] Research completed successfully for topic: Machine Learning in Finance
+2025-09-20 11:59:11,538 - ai_research_agent - INFO - [logger.py:50] - [75bbb0f6-39b8-45de-a3d1-97a4f59608b6] Starting research for topic: Renewable Energy Technologies
+2025-09-20 11:59:11,546 - ai_research_agent - INFO - [logger.py:50] - [75bbb0f6-39b8-45de-a3d1-97a4f59608b6] Step 1: Input Parsing for topic: Renewable Energy Technologies
+2025-09-20 11:59:11,560 - ai_research_agent - INFO - [logger.py:50] - [75bbb0f6-39b8-45de-a3d1-97a4f59608b6] Step 2: Data Gathering for topic: Renewable Energy Technologies
+2025-09-20 11:59:14,973 - ai_research_agent - INFO - [logger.py:50] - [75bbb0f6-39b8-45de-a3d1-97a4f59608b6] Step 3: Processing articles for topic: Renewable Energy Technologies
+2025-09-20 11:59:51,047 - ai_research_agent - INFO - [logger.py:50] - [75bbb0f6-39b8-45de-a3d1-97a4f59608b6] Step 4: Result Persistence for topic: Renewable Energy Technologies
+2025-09-20 11:59:51,058 - ai_research_agent - INFO - [logger.py:50] - [75bbb0f6-39b8-45de-a3d1-97a4f59608b6] Step 5: Return to Frontend for topic: Renewable Energy Technologies
+2025-09-20 11:59:51,062 - ai_research_agent - INFO - [logger.py:50] - [75bbb0f6-39b8-45de-a3d1-97a4f59608b6] Research completed successfully for topic: Renewable Energy Technologies
+2025-09-20 12:18:09,256 - ai_research_agent - INFO - [logger.py:50] - [197451cb-59b8-41de-9ceb-f7ed345a37b6] Starting research for topic: Current Time Test
+2025-09-20 12:18:09,273 - ai_research_agent - INFO - [logger.py:50] - [197451cb-59b8-41de-9ceb-f7ed345a37b6] Step 1: Input Parsing for topic: Current Time Test
+2025-09-20 12:18:09,301 - ai_research_agent - INFO - [logger.py:50] - [197451cb-59b8-41de-9ceb-f7ed345a37b6] Step 2: Data Gathering for topic: Current Time Test
+2025-09-20 12:18:11,859 - ai_research_agent - INFO - [logger.py:50] - [197451cb-59b8-41de-9ceb-f7ed345a37b6] Step 3: Processing articles for topic: Current Time Test
+2025-09-20 12:18:57,973 - ai_research_agent - INFO - [logger.py:50] - [197451cb-59b8-41de-9ceb-f7ed345a37b6] Step 4: Result Persistence for topic: Current Time Test
+2025-09-20 12:18:57,987 - ai_research_agent - INFO - [logger.py:50] - [197451cb-59b8-41de-9ceb-f7ed345a37b6] Step 5: Return to Frontend for topic: Current Time Test
+2025-09-20 12:18:57,992 - ai_research_agent - INFO - [logger.py:50] - [197451cb-59b8-41de-9ceb-f7ed345a37b6] Research completed successfully for topic: Current Time Test
+2025-09-20 12:21:34,485 - ai_research_agent - INFO - [logger.py:50] - [08177fcd-93fe-47da-bc48-f7eb755d2b99] Starting research for topic: Climate Tech Startups
+2025-09-20 12:21:34,496 - ai_research_agent - INFO - [logger.py:50] - [08177fcd-93fe-47da-bc48-f7eb755d2b99] Step 1: Input Parsing for topic: Climate Tech Startups
+2025-09-20 12:21:34,526 - ai_research_agent - INFO - [logger.py:50] - [08177fcd-93fe-47da-bc48-f7eb755d2b99] Step 2: Data Gathering for topic: Climate Tech Startups
+2025-09-20 12:21:37,813 - ai_research_agent - INFO - [logger.py:50] - [08177fcd-93fe-47da-bc48-f7eb755d2b99] Step 3: Processing articles for topic: Climate Tech Startups
+2025-09-20 12:22:34,250 - ai_research_agent - INFO - [logger.py:50] - [08177fcd-93fe-47da-bc48-f7eb755d2b99] Step 4: Result Persistence for topic: Climate Tech Startups
+2025-09-20 12:22:34,262 - ai_research_agent - INFO - [logger.py:50] - [08177fcd-93fe-47da-bc48-f7eb755d2b99] Step 5: Return to Frontend for topic: Climate Tech Startups
+2025-09-20 12:22:34,266 - ai_research_agent - INFO - [logger.py:50] - [08177fcd-93fe-47da-bc48-f7eb755d2b99] Research completed successfully for topic: Climate Tech Startups
+2025-09-20 23:00:00,851 - ai_research_agent - INFO - [logger.py:50] - [4ade3a6e-77e6-435d-9fb7-e0c0cedff452] Starting research for topic: Quantum Computing Basics
+2025-09-20 23:00:00,863 - ai_research_agent - INFO - [logger.py:50] - [4ade3a6e-77e6-435d-9fb7-e0c0cedff452] Step 1: Input Parsing for topic: Quantum Computing Basics
+2025-09-20 23:00:00,889 - ai_research_agent - INFO - [logger.py:50] - [4ade3a6e-77e6-435d-9fb7-e0c0cedff452] Step 2: Data Gathering for topic: Quantum Computing Basics
+2025-09-20 23:00:03,712 - ai_research_agent - INFO - [logger.py:50] - [4ade3a6e-77e6-435d-9fb7-e0c0cedff452] Step 3: Processing articles for topic: Quantum Computing Basics
+2025-09-20 23:00:57,469 - ai_research_agent - INFO - [logger.py:50] - [4ade3a6e-77e6-435d-9fb7-e0c0cedff452] Step 4: Result Persistence for topic: Quantum Computing Basics
+2025-09-20 23:01:17,167 - ai_research_agent - INFO - [logger.py:50] - [4ade3a6e-77e6-435d-9fb7-e0c0cedff452] Step 5: Return to Frontend for topic: Quantum Computing Basics
+2025-09-20 23:01:17,176 - ai_research_agent - INFO - [logger.py:50] - [4ade3a6e-77e6-435d-9fb7-e0c0cedff452] Research completed successfully for topic: Quantum Computing Basics
+2025-09-20 23:54:35,395 - ai_research_agent - INFO - [logger.py:50] - [4bcd1270-e08f-49ca-a0bb-490bd821addb] Starting research for topic: Generative AI in Education
+2025-09-20 23:54:35,417 - ai_research_agent - INFO - [logger.py:50] - [4bcd1270-e08f-49ca-a0bb-490bd821addb] Step 1: Input Parsing for topic: Generative AI in Education
+2025-09-20 23:54:35,480 - ai_research_agent - INFO - [logger.py:50] - [4bcd1270-e08f-49ca-a0bb-490bd821addb] Step 2: Data Gathering for topic: Generative AI in Education
+2025-09-20 23:54:41,691 - ai_research_agent - INFO - [logger.py:50] - [4bcd1270-e08f-49ca-a0bb-490bd821addb] Step 3: Processing articles for topic: Generative AI in Education
+2025-09-20 23:56:13,115 - ai_research_agent - INFO - [logger.py:50] - [4bcd1270-e08f-49ca-a0bb-490bd821addb] Step 4: Result Persistence for topic: Generative AI in Education
+2025-09-20 23:56:13,132 - ai_research_agent - INFO - [logger.py:50] - [4bcd1270-e08f-49ca-a0bb-490bd821addb] Step 5: Return to Frontend for topic: Generative AI in Education
+2025-09-20 23:56:13,138 - ai_research_agent - INFO - [logger.py:50] - [4bcd1270-e08f-49ca-a0bb-490bd821addb] Research completed successfully for topic: Generative AI in Education
+2025-09-21 00:01:12,229 - ai_research_agent - INFO - [logger.py:50] - [93db25a9-f692-4dd9-b65c-01bb4d0ea298] Starting research for topic: Real-time Persistence Test
+2025-09-21 00:01:12,248 - ai_research_agent - INFO - [logger.py:50] - [93db25a9-f692-4dd9-b65c-01bb4d0ea298] Step 1: Input Parsing for topic: Real-time Persistence Test
+2025-09-21 00:01:12,287 - ai_research_agent - INFO - [logger.py:50] - [93db25a9-f692-4dd9-b65c-01bb4d0ea298] Step 2: Data Gathering for topic: Real-time Persistence Test
+2025-09-21 00:01:15,792 - ai_research_agent - INFO - [logger.py:50] - [93db25a9-f692-4dd9-b65c-01bb4d0ea298] Step 3: Processing articles for topic: Real-time Persistence Test
+2025-09-21 00:03:21,542 - ai_research_agent - INFO - [logger.py:50] - [93db25a9-f692-4dd9-b65c-01bb4d0ea298] Step 4: Result Persistence for topic: Real-time Persistence Test
+2025-09-21 00:03:34,088 - ai_research_agent - INFO - [logger.py:50] - [93db25a9-f692-4dd9-b65c-01bb4d0ea298] Step 5: Return to Frontend for topic: Real-time Persistence Test
+2025-09-21 00:03:34,137 - ai_research_agent - INFO - [logger.py:50] - [93db25a9-f692-4dd9-b65c-01bb4d0ea298] Research completed successfully for topic: Real-time Persistence Test
+2025-09-21 00:06:38,193 - ai_research_agent - INFO - [logger.py:50] - [aa63b19a-5227-4926-b7a8-d3321fa30b9c] Starting research for topic: Real-time Frontend Test
+2025-09-21 00:06:38,202 - ai_research_agent - INFO - [logger.py:50] - [aa63b19a-5227-4926-b7a8-d3321fa30b9c] Step 1: Input Parsing for topic: Real-time Frontend Test
+2025-09-21 00:06:38,219 - ai_research_agent - INFO - [logger.py:50] - [aa63b19a-5227-4926-b7a8-d3321fa30b9c] Step 2: Data Gathering for topic: Real-time Frontend Test
+2025-09-21 00:06:41,330 - ai_research_agent - INFO - [logger.py:50] - [aa63b19a-5227-4926-b7a8-d3321fa30b9c] Step 3: Processing articles for topic: Real-time Frontend Test
+2025-09-21 00:08:34,395 - ai_research_agent - INFO - [logger.py:50] - [aa63b19a-5227-4926-b7a8-d3321fa30b9c] Step 4: Result Persistence for topic: Real-time Frontend Test
+2025-09-21 00:08:34,423 - ai_research_agent - INFO - [logger.py:50] - [aa63b19a-5227-4926-b7a8-d3321fa30b9c] Step 5: Return to Frontend for topic: Real-time Frontend Test
+2025-09-21 00:08:34,442 - ai_research_agent - INFO - [logger.py:50] - [aa63b19a-5227-4926-b7a8-d3321fa30b9c] Research completed successfully for topic: Real-time Frontend Test
