@@ -16,9 +16,7 @@ torch==2.1.0
 
 # Database
 sqlalchemy==2.0.23
-alembic==1.12.1
 psycopg2-binary==2.9.9
-asyncpg==0.29.0
 
 # Document generation
 reportlab==4.2.5
@@ -26,11 +24,3 @@ python-docx==1.1.2
 
 # Environment and configuration
 python-dotenv==1.0.0
-
-# Testing (optional for production)
-pytest==7.4.3
-pytest-asyncio==0.21.1
-
-# Background tasks (optional - using FastAPI built-in)
-celery==5.5.3
-redis==6.4.0
